@@ -32,7 +32,7 @@ app.use(express.json());
 
 require("./routes/user")(app);
 
-app.get("/api/v1/liveness", function (req, res) {
+app.get("/", function (req, res) {
     res.send("Welcome to Assignment");
 });
 
