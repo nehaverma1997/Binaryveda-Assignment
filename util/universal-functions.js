@@ -1,7 +1,20 @@
 const Joi = require('joi'),
-        boom = require("@hapi/boom"),
-        bcrypt = require('bcryptjs'),
-        jwt = require('jsonwebtoken');
+    boom = require("@hapi/boom"),
+    bcrypt = require('bcryptjs'),
+    jwt = require('jsonwebtoken');
+
+const sanitizeJoiError = function (error) {
+    let customErrorMessage = '';
+    if (error.indexOf('[') > -1) {
+        customErrorMessage = error.substr(error.indexOf('['));
+    } else {
+        customErrorMessage = error;
+    }
+    customErrorMessage = customErrorMessage.replace(/"/g, '');
+    customErrorMessage = customErrorMessage.replace('[', '');
+    customErrorMessage = customErrorMessage.replace(']', '');
+    return customErrorMessage;
+};
 
 function validateSchema(req, res, next, schema) {
     const { value, error } = schema.validate(req.body, { abortEarly: false });
